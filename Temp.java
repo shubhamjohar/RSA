@@ -31,18 +31,6 @@ public class Temp {
         }
         return temp;
     }
- /* static BigInteger calculate_e( BigInteger phi){
-    	// Find a random number between 1 and phi such that gcd(e,phi)=1
-        BigInteger e;
-    	for( BigInteger i=BigInteger.ONE; i.compareTo(phi) < 0; i.add(BigInteger.ONE) ){
-    	        if(big_gcd(i,phi).compareTo(BigInteger.ONE) == 0){
-                     e = BigInteger(i);
-                    break;
-            }
-     	}
-        return e;
-    }
-*/
 	
     static BigInteger encrypt(BigInteger message_i,BigInteger e, BigInteger n){
 	   //System.out.println(" Message is : "+message_i);
@@ -65,6 +53,7 @@ public class Temp {
         }  
     }
 
+    // function that converts  a given string to its corresponding ascii representation
     static String string_to_ascii(String str){
         String temp="";
         for(int i = 0; i<str.length();i++){
@@ -72,22 +61,6 @@ public class Temp {
         }
         return temp;
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
   public static void main(String[] args) {
@@ -116,62 +89,41 @@ public class Temp {
         JTextArea p_q_phi_textArea = new JTextArea ("",30,60);
         p_q_phi_textArea.setLineWrap(true);
         p_q_phi_textArea.setWrapStyleWord(true);
-      //  JTextArea cipher_textArea = new JTextArea ("",10,30);
-      //  JTextArea plain_textArea = new JTextArea ("",10,30);
         JTextArea message_textArea = new JTextArea("",5,50);
         message_textArea.setLineWrap(true);
         message_textArea.setWrapStyleWord(true);
               
 
-
-        
-
-
         JScrollPane scroll_p = new JScrollPane (p_q_phi_textArea);
         scroll_p.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         scroll_p.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 
-       JScrollPane scroll_q = new JScrollPane (message_textArea);
+        JScrollPane scroll_q = new JScrollPane (message_textArea);
         scroll_q.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         scroll_p.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-/*
-        JScrollPane scroll_phi = new JScrollPane (plain_textArea);
-        scroll_phi.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-        scroll_phi.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-*/
-
 
         send.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){  
-
                 int bitLength = Integer.parseInt(no_bits.getText());
                 BigInteger p,q,n,phi,e_R;
-                
                 p = big_primes(bitLength/2);
                 p_q_phi_textArea.append(" PUBLIC KEY 'p' is : "+p+"\n\n");
                 q = big_primes(bitLength/2);
                 p_q_phi_textArea.append(" PRIVATE KEY 'q' is : "+q+"\n\n");
-
                 n = p.multiply(q);
                 phi = euler_phi(p, q);
                 p_q_phi_textArea.append(" phi is : "+phi+"\n\n");
-        
-                
                 e_R = new BigInteger("65537");   // or 65537 
                 p_q_phi_textArea.append(" e is : "+e_R+"\n\n");
-            
                 BigInteger d = e_R.modInverse(phi);
                 p_q_phi_textArea.append(" d is : "+d+"\n\n");
-            
                 String message = message_textArea.getText();
                 int number_of_zeros_appended=0;
                 if(message.length()%6 != 0){
                     number_of_zeros_appended =6- (message.length() % 6);
                     message += repeat_string_n_times("0",number_of_zeros_appended);
                 }
-                
                 p_q_phi_textArea.append(" Number of blocks is : "+ message.length()/6+"\n\n");
-
                 BigInteger[] cipher_i = new BigInteger[message.length()/6];
                 BigInteger[] message_i = new BigInteger[message.length()/6];
                 String[] mess = new String[message.length()/6];
@@ -205,26 +157,7 @@ public class Temp {
                 JLabel temp = new JLabel();
                 temp.setText(text);
                 panel.add(temp);
-                no_of_bits.setText("RSA using bits : "); 
-            /*    p_q_phi_textArea.append(text+"\n");
-                p_q_phi_textArea.append("p"+"\n"); 
-                p_q_phi_textArea.append(" phi = (p-1)*(q-1) is : 47483780563576844554455710381837"+"\n");
-                p_q_phi_textArea.append(" d value is : 47483780563576844554455710381837"+"\n"); 
-
-                p_q_phi_textArea.append(" message in ASCII is : "+"\n");
-
-                p_q_phi_textArea.append(" encrypted message text is : "+"\n");
-
-                p_q_phi_textArea.append(" decrypted cipher text is : "+"\n");
-                e_RSA.setText("e value is : 65537");
-
-                */
-                //JTextArea textArea = new JTextArea ("",10,30);
-                //textArea.append("47483780563576844554455710381837");
-                //panel.add(textArea);
-               // panel.add(scroll_q);
-                //panel.add(scroll_phi);
-                
+                no_of_bits.setText("RSA using bits : ");       
             }  
         });
         panel.add(no_of_bits); // Components Added using Flow Layout
@@ -232,23 +165,16 @@ public class Temp {
         panel.add(message_label);
         panel.add(message_textArea);  
         panel.add(send); 
-       // panel.add(scroll_q);
         panel.add(scroll_p);  
         panel.add(p); // Components Added using Flow Layout
         panel.add(q);
         panel.add(phi);
         panel.add(e_RSA);
         
-
-        
-        
-
         //Adding Components to the frame.
         frame.getContentPane().add( panel);
-       // frame.getContentPane().add(BorderLayout.CENTER, ta);
+        // frame.getContentPane().add(BorderLayout.CENTER, ta);
         frame.setVisible(true);
-
-       
 
   }
 }
